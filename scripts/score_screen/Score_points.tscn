@@ -1,0 +1,73 @@
+[gd_scene load_steps=2 format=3 uid="uid://cfh4va1530oaq"]
+
+[ext_resource type="FontFile" uid="uid://draluvjlhf55f" path="res://Fonts/VCR_OSD_MONO_1.001.ttf" id="1_sh08t"]
+
+[node name="ScorePoints" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="PERFECT_MATCHS" type="RichTextLabel" parent="CanvasLayer"]
+unique_name_in_owner = true
+offset_left = 1106.0
+offset_top = 82.0
+offset_right = 2181.0
+offset_bottom = 166.0
+theme_override_constants/outline_size = 15
+theme_override_fonts/normal_font = ExtResource("1_sh08t")
+theme_override_font_sizes/normal_font_size = 55
+text = "PERFECT_MATCHS:"
+scroll_active = false
+
+[node name="GREAT_MATCHS" type="RichTextLabel" parent="CanvasLayer"]
+unique_name_in_owner = true
+offset_left = 1106.0
+offset_top = 179.0
+offset_right = 2009.0
+offset_bottom = 257.0
+theme_override_constants/outline_size = 15
+theme_override_fonts/normal_font = ExtResource("1_sh08t")
+theme_override_font_sizes/normal_font_size = 55
+text = "GREAT_MATCHS:"
+scroll_active = false
+
+[node name="GOOD_MATCHS" type="RichTextLabel" parent="CanvasLayer"]
+unique_name_in_owner = true
+offset_left = 1106.0
+offset_top = 276.0
+offset_right = 2020.0
+offset_bottom = 354.0
+theme_override_constants/outline_size = 15
+theme_override_fonts/normal_font = ExtResource("1_sh08t")
+theme_override_font_sizes/normal_font_size = 55
+text = "GOOD_MATCHS:"
+scroll_active = false
+
+[node name="OK_MATCHS" type="RichTextLabel" parent="CanvasLayer"]
+unique_name_in_owner = true
+offset_left = 1106.0
+offset_top = 370.0
+offset_right = 1814.0
+offset_bottom = 452.0
+theme_override_constants/outline_size = 15
+theme_override_fonts/normal_font = ExtResource("1_sh08t")
+theme_override_font_sizes/normal_font_size = 55
+text = "OK_MATCHS:"
+scroll_active = false
+
+[node name="MISS" type="RichTextLabel" parent="CanvasLayer"]
+unique_name_in_owner = true
+offset_left = 1107.0
+offset_top = 466.0
+offset_right = 1821.0
+offset_bottom = 547.0
+theme_override_constants/outline_size = 15
+theme_override_fonts/normal_font = ExtResource("1_sh08t")
+theme_override_font_sizes/normal_font_size = 55
+text = "MISS:"
+scroll_active = false
