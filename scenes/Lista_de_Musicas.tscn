@@ -1,0 +1,49 @@
+[gd_scene load_steps=7 format=3 uid="uid://cb1yiyfufd1pe"]
+
+[ext_resource type="Script" uid="uid://sr8ysmuv23bx" path="res://Scenes/lista_de_musicas.gd" id="1_83v7r"]
+[ext_resource type="VideoStream" uid="uid://f1mvvxj3jmd5" path="res://Sprites/Lista_de_Musicas/Lista-de-Musicas.ogv" id="1_r6rws"]
+[ext_resource type="Script" uid="uid://bsmb2ts63plrn" path="res://Scripts/Lista_de_Musicas/lista_de_musicas.gd" id="2_14etw"]
+[ext_resource type="Material" uid="uid://bp2jgncb34ine" path="res://Shader/CRT.tres" id="4_4it6p"]
+[ext_resource type="AudioStream" uid="uid://rq1twm2j7ti" path="res://sounds/sfx/sfxList.mp3" id="4_ok872"]
+[ext_resource type="AudioStream" uid="uid://b3mvunmn56ad8" path="res://sounds/sfx/sfxSelection.mp3" id="5_yw1cc"]
+
+[node name="Black_Border" type="ColorRect"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+script = ExtResource("1_83v7r")
+metadata/_edit_use_anchors_ = true
+
+[node name="VIDEO" type="VideoStreamPlayer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 201.0
+offset_right = -187.0
+grow_horizontal = 2
+grow_vertical = 2
+stream = ExtResource("1_r6rws")
+autoplay = true
+expand = true
+loop = true
+
+[node name="Node2D" type="Node2D" parent="VIDEO"]
+position = Vector2(-199, 0)
+script = ExtResource("2_14etw")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+material = ExtResource("4_4it6p")
+offset_right = 1920.0
+offset_bottom = 1081.0
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_ok872")
+
+[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_yw1cc")

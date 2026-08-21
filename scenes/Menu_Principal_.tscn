@@ -1,0 +1,104 @@
+[gd_scene load_steps=8 format=3 uid="uid://dbq8s3aautb4h"]
+
+[ext_resource type="VideoStream" uid="uid://bncbgkfbhmkr4" path="res://Sprites/Menu_Principal/Menu_Principal.ogv" id="2_54tys"]
+[ext_resource type="FontFile" uid="uid://draluvjlhf55f" path="res://Fonts/VCR_OSD_MONO_1.001.ttf" id="3_8cs3r"]
+[ext_resource type="Shader" uid="uid://ceg3mjuurmc6l" path="res://Shader/CRT.gdshader" id="3_54tys"]
+[ext_resource type="AudioStream" uid="uid://b3mvunmn56ad8" path="res://sounds/sfx/sfxSelection.mp3" id="3_ujrpt"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_jjfk5"]
+font = ExtResource("3_8cs3r")
+font_size = 50
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="GDScript" id="GDScript_2s8m2"]
+script/source = "extends Label
+
+@onready var sfx_selection = $\"../../Selection\"
+
+func _input(event):
+	if event is InputEventKey:
+		sfx_selection.play()
+		get_tree().change_scene_to_file(\"res://Scenes/Lista_de_Musicas.tscn\")
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8cs3r"]
+shader = ExtResource("3_54tys")
+shader_parameter/crt_curve = 0.022
+shader_parameter/crt_scan_line_color = 0.347
+shader_parameter/aperture_grille_rate = 0.4
+shader_parameter/rf_switch_esque_blur = 1.0
+shader_parameter/white_noise_rate = 0.0
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Black_Border" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 6.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="VIDEO" type="VideoStreamPlayer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 195.0
+offset_top = 7.0
+offset_right = -213.0
+grow_horizontal = 2
+grow_vertical = 2
+stream = ExtResource("2_54tys")
+autoplay = true
+expand = true
+loop = true
+
+[node name="Container" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -324.0
+offset_top = 388.0
+offset_right = 350.0
+offset_bottom = 432.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Text" type="Label" parent="Container"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 15
+text = "[PRESS_ANY_KEY_TO_PLAY]"
+label_settings = SubResource("LabelSettings_jjfk5")
+script = SubResource("GDScript_2s8m2")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="CRT" type="ColorRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_8cs3r")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 1.0
+offset_right = 5.0
+offset_bottom = 6.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Selection" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_ujrpt")

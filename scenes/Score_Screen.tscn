@@ -1,0 +1,70 @@
+[gd_scene load_steps=12 format=3 uid="uid://c4dxpal1u5dun"]
+
+[ext_resource type="Texture2D" uid="uid://cw0ca6xp2epxr" path="res://Sprites/Score_Screen/Score_BKG.png" id="1_pll55"]
+[ext_resource type="Script" uid="uid://bbrhdxjf6ry6n" path="res://Scripts/Score_Screen/score_screen.gd" id="1_rdmsy"]
+[ext_resource type="Script" uid="uid://cdnk8u5dfx858" path="res://Scripts/Score_Screen/bkg.gd" id="3_uo2os"]
+[ext_resource type="PackedScene" uid="uid://cfh4va1530oaq" path="res://Scripts/Score_Screen/Score_points.tscn" id="3_xd8kl"]
+[ext_resource type="Script" uid="uid://b6l64gidqdgau" path="res://Scripts/Score_Screen/score_points.gd" id="4_fffhw"]
+[ext_resource type="AudioStream" uid="uid://dfe4qfxe5tb8d" path="res://sounds/sfx/sfx_applauses.mp3" id="5_fffhw"]
+[ext_resource type="FontFile" uid="uid://draluvjlhf55f" path="res://Fonts/VCR_OSD_MONO_1.001.ttf" id="6_u0fsb"]
+[ext_resource type="Script" uid="uid://cdufs6hjvrhux" path="res://Scripts/Score_Screen/text.gd" id="7_738tm"]
+[ext_resource type="AudioStream" uid="uid://b3mvunmn56ad8" path="res://sounds/sfx/sfxSelection.mp3" id="7_rhxx7"]
+[ext_resource type="Texture2D" uid="uid://dlgk3o8v04isa" path="res://Sprites/Score_Screen/RANK_W.png" id="8_ujlhp"]
+[ext_resource type="Material" uid="uid://bp2jgncb34ine" path="res://Shader/CRT.tres" id="9_k64oq"]
+
+[node name="ColorRect" type="ColorRect"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+script = ExtResource("1_rdmsy")
+
+[node name="BKG" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 166.0
+offset_right = 1770.0
+offset_bottom = 1080.0
+texture = ExtResource("1_pll55")
+expand_mode = 1
+script = ExtResource("3_uo2os")
+
+[node name="Timer" type="Timer" parent="BKG"]
+wait_time = 0.5
+autostart = true
+
+[node name="ScorePoints" parent="." instance=ExtResource("3_xd8kl")]
+layout_mode = 1
+script = ExtResource("4_fffhw")
+
+[node name="Text" type="Label" parent="."]
+layout_mode = 0
+offset_left = 460.0
+offset_top = 986.0
+offset_right = 2086.0
+offset_bottom = 1052.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("6_u0fsb")
+theme_override_font_sizes/font_size = 64
+text = "[PRESS_ANY_KEY_TO_CONTINUE]"
+script = ExtResource("7_738tm")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_fffhw")
+
+[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_rhxx7")
+
+[node name="RANK" type="Sprite2D" parent="."]
+position = Vector2(797, 529)
+scale = Vector2(3, 3)
+texture = ExtResource("8_ujlhp")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+material = ExtResource("9_k64oq")
+offset_right = 1917.0
+offset_bottom = 1079.0

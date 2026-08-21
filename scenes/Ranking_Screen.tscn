@@ -1,0 +1,119 @@
+[gd_scene load_steps=6 format=3 uid="uid://dwoak5k0lcr1p"]
+
+[ext_resource type="Texture2D" uid="uid://02u4x3pio353" path="res://Sprites/Ranking_Screen/rank.png" id="1_7sj5o"]
+[ext_resource type="FontFile" uid="uid://draluvjlhf55f" path="res://Fonts/VCR_OSD_MONO_1.001.ttf" id="6_tmovk"]
+[ext_resource type="Script" uid="uid://cdufs6hjvrhux" path="res://Scripts/Score_Screen/text.gd" id="7_i3tru"]
+[ext_resource type="AudioStream" uid="uid://b3mvunmn56ad8" path="res://sounds/sfx/sfxSelection.mp3" id="9_ygs5q"]
+[ext_resource type="Material" uid="uid://bp2jgncb34ine" path="res://Shader/CRT.tres" id="11_40kwx"]
+
+[node name="ColorRect" type="ColorRect"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="BKG" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 166.0
+offset_right = 1770.0
+offset_bottom = 1080.0
+texture = ExtResource("1_7sj5o")
+expand_mode = 1
+
+[node name="RANKS" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RANK1" type="Label" parent="RANKS"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -381.0
+offset_top = -222.0
+offset_right = 381.0
+offset_bottom = -134.0
+grow_horizontal = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("6_tmovk")
+theme_override_font_sizes/font_size = 100
+text = "1 PLACE: 0000"
+
+[node name="RANK2" type="Label" parent="RANKS"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -381.0
+offset_top = -88.0
+offset_right = 381.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("6_tmovk")
+theme_override_font_sizes/font_size = 100
+text = "2 PLACE: 0000"
+
+[node name="RANK3" type="Label" parent="RANKS"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -381.0
+offset_top = 69.0
+offset_right = 381.0
+offset_bottom = 157.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("6_tmovk")
+theme_override_font_sizes/font_size = 100
+text = "3 PLACE: 0000"
+
+[node name="Text" type="Label" parent="."]
+layout_mode = 0
+offset_left = 264.0
+offset_top = 986.0
+offset_right = 1890.0
+offset_bottom = 1052.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("6_tmovk")
+theme_override_font_sizes/font_size = 64
+text = "[PRESS_ANY_KEY_TO_RETURN_TO_THE_LIST]"
+script = ExtResource("7_i3tru")
+
+[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_ygs5q")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+material = ExtResource("11_40kwx")
+offset_right = 1917.0
+offset_bottom = 1079.0
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
+[connection signal="timeout" from="Timer" to="Text" method="_on_timer_timeout"]
