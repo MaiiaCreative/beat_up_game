@@ -1,0 +1,43 @@
+[gd_scene load_steps=5 format=3 uid="uid://fwh705wic7j8"]
+
+[ext_resource type="Shader" uid="uid://bfcna7es78bs6" path="res://Shaders/CRT.gdshader" id="1_an30o"]
+[ext_resource type="PackedScene" uid="uid://bcn0a7worco8n" path="res://Scripts/Level/Objects/key_listener.tscn" id="1_njnba"]
+[ext_resource type="PackedScene" uid="uid://de0abi5nfv8xy" path="res://Scripts/Level/Objects/game_ui.tscn" id="2_mpenh"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_an30o"]
+shader = ExtResource("1_an30o")
+shader_parameter/crt_curve = 0.02
+shader_parameter/crt_scan_line_color = 0.347
+shader_parameter/aperture_grille_rate = 0.4
+shader_parameter/rf_switch_esque_blur = 1.0
+shader_parameter/white_noise_rate = 0.0
+
+[node name="GameLevel" type="Node2D"]
+material = SubResource("ShaderMaterial_an30o")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="KeyListener" parent="." instance=ExtResource("1_njnba")]
+position = Vector2(284, 424)
+key_name = "Left"
+
+[node name="KeyListener2" parent="." instance=ExtResource("1_njnba")]
+position = Vector2(407, 424)
+frame = 1
+key_name = "Down"
+
+[node name="KeyListener3" parent="." instance=ExtResource("1_njnba")]
+position = Vector2(529, 424)
+frame = 2
+key_name = "Up"
+
+[node name="KeyListener4" parent="." instance=ExtResource("1_njnba")]
+position = Vector2(652, 424)
+frame = 3
+key_name = "Right"
+
+[node name="GameUI" parent="." instance=ExtResource("2_mpenh")]
+offset_left = 45.0
+offset_top = 231.0
+offset_right = 45.0
+offset_bottom = 231.0

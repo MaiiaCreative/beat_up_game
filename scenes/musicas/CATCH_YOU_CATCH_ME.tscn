@@ -1,0 +1,176 @@
+[gd_scene load_steps=9 format=3 uid="uid://ys3hewghpmp2"]
+
+[ext_resource type="VideoStream" uid="uid://ds0hdhug3ponq" path="res://Sprites/Level/VideoClip/CATCH_YOU_CATCH_ME.ogv" id="1_e4eit"]
+[ext_resource type="PackedScene" uid="uid://bcn0a7worco8n" path="res://Scripts/Level/Objects/key_listener.tscn" id="2_ucsnv"]
+[ext_resource type="PackedScene" uid="uid://de0abi5nfv8xy" path="res://Scripts/Level/Objects/game_ui.tscn" id="3_b18pl"]
+[ext_resource type="PackedScene" uid="uid://kmlt7arphr1e" path="res://Scripts/Level/Objects/level_editor.tscn" id="4_qwc0p"]
+[ext_resource type="Shader" uid="uid://ceg3mjuurmc6l" path="res://Shader/CRT.gdshader" id="5_dyaqy"]
+
+[sub_resource type="Shader" id="Shader_pa4el"]
+code = "/*
+	CRT shader for Godot Engine by Yui Kinomoto @arlez80
+*/
+shader_type canvas_item;
+
+// 画面
+uniform sampler2D screen_texture : hint_screen_texture;
+
+// ブラウン管のガラスの曲がり具合（フラットなやつは0.0でいいかな）
+uniform float crt_curve : hint_range( 0.0, 1.0 ) = 0.02;
+// 走査線の濃さ
+uniform float crt_scan_line_color : hint_range( 0.0, 1.0 ) = 0.347;
+// 光量
+uniform float aperture_grille_rate : hint_range( 0.0, 1.0 ) = 0.4;
+// RFスイッチ的ブラー
+uniform float rf_switch_esque_blur : hint_range( 0.0, 1.0 ) = 1.0;
+// 白色ノイズ
+uniform float white_noise_rate : hint_range( 0.0, 1.0 ) = 0.0;
+
+float random( vec2 pos )
+{
+	return fract(sin(dot(pos, vec2(12.9898,78.233))) * 43758.5453);
+}
+
+void fragment( )
+{
+	// ガラスの曲がり具合
+	vec2 crt_curve_shift = ( vec2( 1.0, 1.0 ) - sin( UV.yx * PI ) ) * crt_curve;
+	vec2 crt_curve_scale = vec2( 1.0, 1.0 ) + crt_curve_shift * 2.0;
+	vec2 texture_fixed_uv = UV * crt_curve_scale - crt_curve_shift;
+	vec2 fixed_uv = SCREEN_UV * crt_curve_scale - crt_curve_shift;
+	// 範囲外を消す
+	float enable_color = float( 0.0 <= texture_fixed_uv.x && texture_fixed_uv.x <= 1.0 && 0.0 <= texture_fixed_uv.y && texture_fixed_uv.y <= 1.0 );
+
+	// ガラスの曲がり具合から元色を取得 + RFスイッチ的ブラー
+	COLOR.rgb = (
+		(
+			texture( screen_texture, fixed_uv ).rgb
+		*	( 1.0 - rf_switch_esque_blur * 0.5 )
+		)
+	+	(
+			(
+				texture( screen_texture, fixed_uv + vec2( -SCREEN_PIXEL_SIZE.x * 3.1, 0.0 ) ).rgb
+			+	texture( screen_texture, fixed_uv + vec2( SCREEN_PIXEL_SIZE.x * 3.1, 0.0 ) ).rgb
+			)
+			*	( rf_switch_esque_blur * 0.25 )	// （RFノイズ）0.5 * （テクスチャから読んだ2箇所を半分にしたい）0.5
+		)
+	) * enable_color;
+	COLOR.a = 1.0;
+
+	// ------------------------------------------------
+	// 以下はアパーチャグリル上の1ピクセルごとの処理
+	vec2 aperture_grille_pixel = vec2( floor( ( fixed_uv.x / SCREEN_PIXEL_SIZE.x ) / 3.0 ) * 3.0, fixed_uv.y );
+
+	// 白色ノイズ
+	float white_noise = random( aperture_grille_pixel + vec2( sin( TIME * 0.543254 ), cos( TIME * 0.254323563 ) ) );
+	COLOR.rgb = mix(
+		COLOR.rgb
+	,	vec3( white_noise, white_noise, white_noise )
+	,	white_noise_rate * enable_color
+	);
+
+	// アパーチャグリル再現
+	float aperture_grille_point = mod( ( ( SCREEN_UV.x * crt_curve_scale.x ) - crt_curve_shift.x ) / SCREEN_PIXEL_SIZE.x, 3.0 );
+	float aperture_grille_r_rate = clamp( 1.0 - aperture_grille_point, 0.0, 1.0 ) + clamp( aperture_grille_point - 2.0, 0.0, 1.0 );
+	float aperture_grille_g_rate = clamp( 1.0 - abs( 1.0 - aperture_grille_point ), 0.0, 1.0 );
+	float aperture_grille_b_rate = 1.0 - aperture_grille_r_rate - aperture_grille_g_rate;
+	COLOR = clamp(
+		COLOR * vec4(
+			normalize( vec3(
+				clamp( aperture_grille_r_rate, aperture_grille_rate, 1.0 )
+			,	clamp( aperture_grille_g_rate, aperture_grille_rate, 1.0 )
+			,	clamp( aperture_grille_b_rate, aperture_grille_rate, 1.0 )
+			) )
+		,	1.0
+		)
+	,	vec4( 0.0, 0.0, 0.0, 0.0 )
+	,	vec4( 1.0, 1.0, 1.0, 1.0 )
+	);
+
+	// 走査線
+	COLOR = mix(
+		COLOR
+	,	vec4( 0.0, 0.0, 0.0, 1.0 )
+	,	float( 0 == int( fixed_uv.y / SCREEN_PIXEL_SIZE.y ) % 2 ) * crt_scan_line_color
+	);
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_an30o"]
+shader = SubResource("Shader_pa4el")
+shader_parameter/crt_curve = 0.02
+shader_parameter/crt_scan_line_color = 0.347
+shader_parameter/aperture_grille_rate = 0.4
+shader_parameter/rf_switch_esque_blur = 1.0
+shader_parameter/white_noise_rate = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jlkby"]
+shader = ExtResource("5_dyaqy")
+shader_parameter/crt_curve = 0.02
+shader_parameter/crt_scan_line_color = 0.347
+shader_parameter/aperture_grille_rate = 0.4
+shader_parameter/rf_switch_esque_blur = 1.0
+shader_parameter/white_noise_rate = 0.0
+
+[node name="GameLevel" type="Node2D"]
+material = SubResource("ShaderMaterial_an30o")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -968.0
+offset_top = -543.0
+offset_right = 960.0
+offset_bottom = 539.0
+color = Color(0, 0, 0, 1)
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 175.0
+offset_top = 4.0
+offset_right = -182.0
+grow_horizontal = 2
+grow_vertical = 2
+stream = ExtResource("1_e4eit")
+volume_db = -80.0
+autoplay = true
+expand = true
+
+[node name="KeyListener" parent="." instance=ExtResource("2_ucsnv")]
+position = Vector2(284, 424)
+key_name = "Left"
+
+[node name="KeyListener2" parent="." instance=ExtResource("2_ucsnv")]
+position = Vector2(407, 424)
+frame = 1
+key_name = "Down"
+
+[node name="KeyListener3" parent="." instance=ExtResource("2_ucsnv")]
+position = Vector2(529, 424)
+frame = 2
+key_name = "Up"
+
+[node name="KeyListener4" parent="." instance=ExtResource("2_ucsnv")]
+position = Vector2(652, 424)
+frame = 3
+key_name = "Right"
+
+[node name="GameUI" parent="." instance=ExtResource("3_b18pl")]
+offset_left = 45.0
+offset_top = 231.0
+offset_right = 45.0
+offset_bottom = 231.0
+
+[node name="LevelEditor" parent="." instance=ExtResource("4_qwc0p")]
+current_level_name = "CATCH_YOU_CATCH_ME"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_jlkby")
+offset_left = -965.0
+offset_top = -539.0
+offset_right = 1918.0
+offset_bottom = 1089.0

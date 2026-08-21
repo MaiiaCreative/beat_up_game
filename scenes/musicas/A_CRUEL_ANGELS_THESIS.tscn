@@ -1,0 +1,78 @@
+[gd_scene load_steps=7 format=3 uid="uid://b4cx7w0toag8g"]
+
+[ext_resource type="VideoStream" uid="uid://b3f7jimtt5i21" path="res://Sprites/Level/VideoClip/A_CRUEL_ANGELS_THESIS.ogv" id="1_febqe"]
+[ext_resource type="PackedScene" uid="uid://bcn0a7worco8n" path="res://Scripts/Level/Objects/key_listener.tscn" id="2_dtfmf"]
+[ext_resource type="PackedScene" uid="uid://de0abi5nfv8xy" path="res://Scripts/Level/Objects/game_ui.tscn" id="3_3pxxs"]
+[ext_resource type="PackedScene" uid="uid://kmlt7arphr1e" path="res://Scripts/Level/Objects/level_editor.tscn" id="4_ox50g"]
+[ext_resource type="Shader" uid="uid://ceg3mjuurmc6l" path="res://Shader/CRT.gdshader" id="5_dtfmf"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3pxxs"]
+shader = ExtResource("5_dtfmf")
+shader_parameter/crt_curve = 0.02
+shader_parameter/crt_scan_line_color = 0.347
+shader_parameter/aperture_grille_rate = 0.4
+shader_parameter/rf_switch_esque_blur = 1.0
+shader_parameter/white_noise_rate = 0.0
+
+[node name="GameLevel" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -968.0
+offset_top = -543.0
+offset_right = 960.0
+offset_bottom = 539.0
+color = Color(0, 0, 0, 1)
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 175.0
+offset_top = 4.0
+offset_right = -182.0
+grow_horizontal = 2
+grow_vertical = 2
+stream = ExtResource("1_febqe")
+volume_db = -80.0
+autoplay = true
+expand = true
+
+[node name="KeyListener" parent="." instance=ExtResource("2_dtfmf")]
+position = Vector2(284, 424)
+key_name = "Left"
+
+[node name="KeyListener2" parent="." instance=ExtResource("2_dtfmf")]
+position = Vector2(407, 424)
+frame = 1
+key_name = "Down"
+
+[node name="KeyListener3" parent="." instance=ExtResource("2_dtfmf")]
+position = Vector2(529, 424)
+frame = 2
+key_name = "Up"
+
+[node name="KeyListener4" parent="." instance=ExtResource("2_dtfmf")]
+position = Vector2(652, 424)
+frame = 3
+key_name = "Right"
+
+[node name="GameUI" parent="." instance=ExtResource("3_3pxxs")]
+offset_left = 45.0
+offset_top = 231.0
+offset_right = 45.0
+offset_bottom = 231.0
+
+[node name="LevelEditor" parent="." instance=ExtResource("4_ox50g")]
+current_level_name = "A_CRUEL_ANGELS_THESIS"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_3pxxs")
+offset_left = -965.0
+offset_top = -539.0
+offset_right = 1918.0
+offset_bottom = 1089.0
