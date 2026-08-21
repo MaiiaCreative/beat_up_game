@@ -1,0 +1,41 @@
+[gd_scene load_steps=3 format=3 uid="uid://de0abi5nfv8xy"]
+
+[ext_resource type="Script" uid="uid://dmnrrorlcuo05" path="res://Scripts/Level/Objects/game_ui.gd" id="1_47sbb"]
+[ext_resource type="FontFile" uid="uid://draluvjlhf55f" path="res://Fonts/VCR_OSD_MONO_1.001.ttf" id="2_5t20m"]
+
+[node name="GameUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_47sbb")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ScoreLabel" type="RichTextLabel" parent="CanvasLayer"]
+unique_name_in_owner = true
+offset_left = 195.0
+offset_top = 89.0
+offset_right = 1594.0
+offset_bottom = 173.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 15
+theme_override_fonts/normal_font = ExtResource("2_5t20m")
+theme_override_font_sizes/normal_font_size = 80
+text = "0 PTS"
+scroll_active = false
+
+[node name="ComboLabel" type="RichTextLabel" parent="CanvasLayer"]
+unique_name_in_owner = true
+offset_left = 197.0
+offset_top = 213.0
+offset_right = 1956.0
+offset_bottom = 297.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 15
+theme_override_fonts/normal_font = ExtResource("2_5t20m")
+theme_override_font_sizes/normal_font_size = 80
+text = "0X COMBO"
+scroll_active = false

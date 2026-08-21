@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://ejcyose7ne2u"]
+
+[ext_resource type="Script" uid="uid://bqn8c31hwwxec" path="res://Scripts/Level/Objects/SignalIs.gd" id="1_spyob"]
+
+[node name="SignalIs" type="Node2D"]
+script = ExtResource("1_spyob")
